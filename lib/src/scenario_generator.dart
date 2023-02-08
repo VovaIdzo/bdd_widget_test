@@ -22,6 +22,7 @@ void parseScenario(
   }
 
   for (final step in scenario) {
+    sb.writeln('${spaces}print("${step.rawLine}");');
     sb.writeln('${spaces}await ${getStepMethodCall(step.value)};');
   }
 

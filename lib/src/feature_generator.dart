@@ -6,12 +6,9 @@ import 'package:bdd_widget_test/src/step_generator.dart';
 import 'package:bdd_widget_test/src/util/constants.dart';
 import 'package:collection/collection.dart';
 
-String generateFeatureDart(
-  List<BddLine> lines,
-  List<StepFile> steps,
-  String testMethodName,
-  bool isIntegrationTest,
-) {
+String generateFeatureDart(List<BddLine> lines, List<StepFile> steps,
+    String testMethodName, bool isIntegrationTest,
+    [Map<String, String>? sharedSteps]) {
   final sb = StringBuffer();
   sb.writeln('// GENERATED CODE - DO NOT MODIFY BY HAND');
   sb.writeln('// ignore_for_file: unused_import, directives_ordering');
@@ -44,8 +41,12 @@ String generateFeatureDart(
     sb.writeln("@Tags(['${tags.join("', '")}'])");
   }
 
-  for (final step in steps.map((e) => e.import).toSet()) {
-    sb.writeln('import \'$step\';');
+  for (final step in steps.map((e) => e.fName).toSet()) {
+    var stepPath = steps.firstWhere((element) => element.fName == step).import;
+
+    stepPath = sharedSteps?[step] ?? stepPath;
+
+    sb.writeln('import \'$stepPath\';');
   }
 
   sb.writeln();

@@ -9,6 +9,7 @@ class GeneratorOptions {
   const GeneratorOptions({
     String? testMethodName,
     List<String>? externalSteps,
+    this.externalStepsDir,
     String? stepFolderName,
     this.include,
   })  : stepFolder = stepFolderName ?? _stepFolderName,
@@ -18,6 +19,7 @@ class GeneratorOptions {
   factory GeneratorOptions.fromMap(Map<String, dynamic> json) =>
       GeneratorOptions(
         testMethodName: json['testMethodName'] as String?,
+        externalStepsDir: json['externalStepsDir'] as String?,
         externalSteps: (json['externalSteps'] as List?)?.cast<String>(),
         stepFolderName: json['stepFolderName'] as String?,
         include: json['include'] is String
@@ -27,6 +29,7 @@ class GeneratorOptions {
 
   final String stepFolder;
   final String testMethodName;
+  final String? externalStepsDir;
   final List<String>? include;
   final List<String> externalSteps;
 }
@@ -60,6 +63,7 @@ GeneratorOptions readFromUri(Uri uri) {
   final doc = loadYamlNode(rawYaml) as YamlMap;
   return GeneratorOptions(
     testMethodName: doc['testMethodName'] as String?,
+    externalStepsDir: doc['externalStepsDir'] as String?,
     externalSteps: (doc['externalSteps'] as List?)?.cast<String>(),
     stepFolderName: doc['stepFolderName'] as String?,
     include: doc['include'] is String
@@ -75,6 +79,7 @@ GeneratorOptions merge(GeneratorOptions a, GeneratorOptions b) =>
           : b.testMethodName,
       stepFolderName:
           a.stepFolder != _stepFolderName ? a.stepFolder : b.stepFolder,
+      externalStepsDir: b.externalStepsDir ?? a.externalStepsDir,
       externalSteps: [...a.externalSteps, ...b.externalSteps],
       include: b.include,
     );

@@ -43,6 +43,15 @@ class FeatureFile {
         isIntegrationTest,
       );
 
+
+  String getDartContent(Map<String, String> sharedSteps) => generateFeatureDart(
+        _lines,
+        getStepFiles(),
+        generatorOptions.testMethodName,
+        isIntegrationTest,
+        sharedSteps
+      );
+
   List<StepFile> getStepFiles() => _stepFiles;
 
   static List<BddLine> _prepareLines(Iterable<BddLine> input) {
@@ -51,5 +60,10 @@ class FeatureFile {
         .skip(headers.length)
         .where((value) => value.type != LineType.unknown);
     return [...headers, ...lines];
+  }
+
+  @override
+  String toString() {
+    return "Steps: ${_stepFiles},\nContent:\n${dartContent}\n\n";
   }
 }

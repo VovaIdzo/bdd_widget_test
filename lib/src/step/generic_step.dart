@@ -12,6 +12,7 @@ class GenericStep implements BddStep {
   String get content => '''
 import 'package:flutter_test/flutter_test.dart';
 
+/// $rawLine
 ${getStepSignature(rawLine)} {
   throw UnimplementedError();
 }
